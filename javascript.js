@@ -77,11 +77,11 @@ const displayController = (() => {
 
     const updateScoreDisplay = () => {
         playerOneDisplay.textContent =
-            `${game.getPlayerOne().getName()}'s
+            `${game.getPlayerOne().getName()}
             score: ${game.getPlayerOne().getScore()}`;
 
         playerTwoDisplay.textContent =
-            `${game.getPlayerTwo().getName()}'s
+            `${game.getPlayerTwo().getName()}
             score: ${game.getPlayerTwo().getScore()}`;
     }
 
@@ -125,14 +125,14 @@ const displayController = (() => {
     scoreDisplay.addEventListener('click', event => {
         if (event.target.classList.contains("change-name")) {
             const newName = prompt("Enter new player name");
-            if (event.target.parentElement.id === 'player-one') {
-                game.getPlayerOne()
-                    .changeName(newName);
-            } else {
-                game.getPlayerTwo()
-                    .changeName(newName);
+            if (newName !== null) {
+                if (event.target.parentElement.id === 'player-one') {
+                    game.getPlayerOne().changeName(newName);
+                } else {
+                    game.getPlayerTwo().changeName(newName);
+                }
+                updateScoreDisplay();
             }
-            updateScoreDisplay();
         }
     });
 
@@ -163,8 +163,8 @@ function createPlayer(playerName, playerMark) {
 }
 
 function createGame() {
-    const playerOne = createPlayer('Jimmy', 'O');
-    const playerTwo = createPlayer('Tommy', 'X');
+    const playerOne = createPlayer('Player one', 'O');
+    const playerTwo = createPlayer('Player two', 'X');
 
     const getPlayerOne = () => playerOne;
     const getPlayerTwo = () => playerTwo;
