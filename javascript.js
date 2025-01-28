@@ -51,7 +51,10 @@ const gameBoard = (() => {
 
     const getBoardArray = () => board;
 
-    return { addMark, reset, checkDraw, checkWin, getBoardArray };
+    return {
+        addMark, reset, checkDraw,
+        checkWin, getBoardArray
+    };
 })();
 
 const displayController = (() => {
@@ -61,7 +64,7 @@ const displayController = (() => {
     const playerOneDisplay = document.querySelector('#player1-score');
     const playerTwoDisplay = document.querySelector('#player2-score');
     const restartGameButton = document.querySelector('#restart-game');
-    const restartScoresButton = document.querySelector('#restart-scores');
+    const resetScoresButton = document.querySelector('#reset-scores');
 
 
     const updateBoardDisplay = () => {
@@ -84,6 +87,7 @@ const displayController = (() => {
         if (event.target.classList.contains('square')) {
 
             if (game.getGameStatus()) {
+                
                 const row = parseInt(event.target.dataset.row);
                 const col = parseInt(event.target.dataset.col);
 
@@ -107,10 +111,10 @@ const displayController = (() => {
         gameBoard.reset();
         displayController.updateBoardDisplay();
         game.startGame();
-        game.setCurrentPlayer(game.playerTwo); // Makes p1 start 
+        game.setCurrentPlayer(game.getPlayerTwo()); // Makes p1 start 
     });
 
-    restartScoresButton.addEventListener('click', () => {
+    resetScoresButton.addEventListener('click', () => {
         game.getPlayerOne().restartScore();
         game.getPlayerTwo().restartScore();
         displayController.updateScoreDisplay();
@@ -146,6 +150,9 @@ function createGame() {
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
 
+    const getPlayerOne = () => playerOne;
+    const getPlayerTwo = () => playerTwo;
+
     let currentPlayer = playerTwo; // Hack to make p1 go first
     const setCurrentPlayer = (player) => {
         if (player) {
@@ -155,10 +162,6 @@ function createGame() {
                 playerOne ? playerTwo : playerOne;
         }
     }
-
-    const getPlayerOne = () => playerOne;
-    const getPlayerTwo = () => playerTwo;
-
 
     let gameActive = true;
     const startGame = () => gameActive = true;
