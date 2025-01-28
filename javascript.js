@@ -34,5 +34,12 @@ function createNewGame() {
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
 
-    return { playerOne, playerTwo };
+    let playerOneScore = 0;
+    let playerTwoScore = 0;
+
+    const getScores = () => [playerOneScore, playerTwoScore];
+    const givePointOne = () => playerOneScore++
+    const givePointTwo = () => playerTwoScore++
+
+    return { playerOne, playerTwo, givePointOne, givePointTwo, getScores };
 }
