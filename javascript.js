@@ -69,7 +69,7 @@ const displayController = (() => {
     const restartScoresButton = document.querySelector('#restart-scores');
 
 
-    const updateBoard = () => {
+    const updateBoardDisplay = () => {
         const flatBoardArray = gameBoard.getBoardArray().flat();
         squares.forEach((square, i) => {
             square.textContent = flatBoardArray[i] ===
@@ -83,7 +83,6 @@ const displayController = (() => {
 
         playerTwoDisplay.textContent =
             `Player two score: ${game.playerTwo.getScore()}`;
-
     }
 
     board.addEventListener('click', event => {
@@ -98,20 +97,19 @@ const displayController = (() => {
                 gameBoard.addMark(player.mark, row, col);
                 if (gameBoard.checkWin(player.mark)) {
                     player.addScore();
-                    updateScoreDisplay();                    
+                    updateScoreDisplay();
                     game.finishGame();
                 } else if (gameBoard.checkDraw()) {
                     game.finishGame();
                 }
-
-                displayController.updateBoard();
+                displayController.updateBoardDisplay();
             }
         }
     });
 
     restartGameButton.addEventListener('click', () => {
         gameBoard.reset();
-        displayController.updateBoard();
+        displayController.updateBoardDisplay();
         game.startGame();
 
     });
@@ -123,7 +121,7 @@ const displayController = (() => {
 
     });
 
-    return { updateBoard, updateScoreDisplay };
+    return { updateBoardDisplay, updateScoreDisplay };
 
 })();
 
@@ -138,7 +136,10 @@ function createPlayer(playerName, playerMark) {
     const addScore = () => score++
     const restartScore = () => score = 0;
 
-    return { name, mark, getScore, addScore, restartScore };
+    return {
+        name, mark, getScore,
+        addScore, restartScore,
+    };
 }
 
 function createGame() {
@@ -159,6 +160,6 @@ function createGame() {
     return {
         playerOne, playerTwo,
         setCurrentPlayer, startGame,
-        finishGame, getGameStatus
+        finishGame, getGameStatus,
     };
 }
