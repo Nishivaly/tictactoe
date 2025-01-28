@@ -1,27 +1,38 @@
-function createGameBoard() {
-    const gameBoard = [
+const gameBoard = (() => {
+    const board = [
         [, , ,],
         [, , ,],
         [, , ,]
     ];
-    const addMark = (playerMark, row, column) => {
-        gameBoard[row][column] = playerMark;
-    }
-    const showGameBoard = () => console.log(gameBoard);
 
-    return { addMark, showGameBoard };
-}
+    const addMark = (mark, row, column) => {
+        if (!board[row][column]) {
+            board[row][column] = mark;
+        }
+    };
 
-function createPlayer(mark, playerName) {
-    const player = playerName;
-    const playerMark = mark;
-    return { player, playerMark };
+    const resetBoard = () => {
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                board[row][col] = undefined;
+            }
+        }
+    };
+
+    const showBoard = () => console.log(board);
+
+    return { addMark, resetBoard, showBoard };
+})();
+
+function createPlayer(playerName, playerMark) {
+    const name = playerName;
+    const mark = playerMark;
+    return { name, mark };
 }
 
 function createNewGame() {
-    const gameBoard = createGameBoard();
-    const playerOne = createPlayer('O', 'Jimmy');
-    const playerTwo = createPlayer('X', 'Tommy');
+    const playerOne = createPlayer('Jimmy', 'O');
+    const playerTwo = createPlayer('Tommy', 'X');
 
-    return { gameBoard, playerOne, playerTwo, };
+    return { playerOne, playerTwo };
 }
