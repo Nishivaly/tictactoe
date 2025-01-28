@@ -27,7 +27,7 @@ body {
 
 }
 
-.cell {
+.square {
     background-color: gray;
     border: 2px black solid;
 }

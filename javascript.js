@@ -1,12 +1,12 @@
 const gameBoard = (() => {
     const board = [
-        [, , ,],
-        [, , ,],
-        [, , ,]
+        [null, null, null,],
+        [null, null, null,],
+        [null, null, null,]
     ];
 
     const addMark = (mark, row, column) => {
-        if (!board[row][column]) {
+        if (board[row][column] === null) {
             board[row][column] = mark;
         } else {
             console.log('Space already taken!');
@@ -54,9 +54,28 @@ const gameBoard = (() => {
         }
     };
 
+    const getBoardArray = () => board;
+
     const show = () => console.log(board);
 
-    return { addMark, reset, show, checkDraw, checkWin };
+    return { addMark, reset, show, checkDraw, checkWin, getBoardArray };
+})();
+
+const boarDisplay = (() => {
+
+    // const board = document.querySelector('#board');
+    const squares = document.querySelectorAll('#board .square');
+
+    const updateBoard = (boardArray) => {
+        const flatBoardArray = boardArray.flat();
+        squares.forEach((square, i) => {
+            square.textContent = flatBoardArray[i] ===
+                null ? 'EMPTY' : flatBoardArray[i];
+        });
+    }
+
+    return { updateBoard };
+
 })();
 
 function createPlayer(playerName, playerMark) {
