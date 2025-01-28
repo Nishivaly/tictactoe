@@ -34,6 +34,7 @@ const gameBoard = (() => {
         return false;
     };
 
+    // Should only be called after checking for a win
     const checkDraw = () => {
         for (let row = 0; row < 3; row++) {
             for (let col = 0; col < 3; col++) {
@@ -45,7 +46,7 @@ const gameBoard = (() => {
         return true; // All cells are filled
     }
 
-    const resetBoard = () => {
+    const reset = () => {
         for (let row = 0; row < 3; row++) {
             for (let col = 0; col < 3; col++) {
                 board[row][col] = null;
@@ -53,9 +54,9 @@ const gameBoard = (() => {
         }
     };
 
-    const showBoard = () => console.log(board);
+    const show = () => console.log(board);
 
-    return { addMark, resetBoard, showBoard, checkDraw, checkWin };
+    return { addMark, reset, show, checkDraw, checkWin };
 })();
 
 function createPlayer(playerName, playerMark) {
@@ -70,7 +71,7 @@ function createPlayer(playerName, playerMark) {
 }
 
 function createNewGame() {
-    gameBoard.resetBoard();
+    gameBoard.reset();
 
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
