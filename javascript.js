@@ -8,13 +8,16 @@ const gameBoard = (() => {
     const addMark = (mark, row, column) => {
         if (!board[row][column]) {
             board[row][column] = mark;
+        } else {
+            console.log('Space already taken!');
         }
+        console.log(board);
     };
 
     const resetBoard = () => {
         for (let row = 0; row < 3; row++) {
             for (let col = 0; col < 3; col++) {
-                board[row][col] = undefined;
+                board[row][col] = null;
             }
         }
     };
@@ -27,19 +30,19 @@ const gameBoard = (() => {
 function createPlayer(playerName, playerMark) {
     const name = playerName;
     const mark = playerMark;
-    return { name, mark };
+
+    let score = 0;
+    const getScore = () => score;
+    const addScore = () => score++
+
+    return { name, mark, getScore, addScore };
 }
 
 function createNewGame() {
+    gameBoard.resetBoard();
+
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
 
-    let playerOneScore = 0;
-    let playerTwoScore = 0;
-
-    const getScores = () => [playerOneScore, playerTwoScore];
-    const givePointOne = () => playerOneScore++
-    const givePointTwo = () => playerTwoScore++
-
-    return { playerOne, playerTwo, givePointOne, givePointTwo, getScores };
+    return { playerOne, playerTwo };
 }
