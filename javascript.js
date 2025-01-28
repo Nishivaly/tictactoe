@@ -39,11 +39,11 @@ const gameBoard = (() => {
         for (let row = 0; row < 3; row++) {
             for (let col = 0; col < 3; col++) {
                 if (board[row][col] === null) {
-                    return false; // At least one cell is empty
+                    return false;
                 }
             }
         }
-        return true; // All cells are filled
+        return true;
     }
 
     const reset = () => {
@@ -76,13 +76,20 @@ const boarDisplay = (() => {
 
     board.addEventListener('click', event => {
         if (event.target.classList.contains('square')) {
+
             const row = parseInt(event.target.dataset.row);
             const col = parseInt(event.target.dataset.col);
 
-            const mark = game.setCurrentPlayer().mark;
+            const player = game.setCurrentPlayer();
+            const mark = player.mark;
+
             gameBoard.addMark(mark, row, col);
-            gameBoard.checkWin(mark);
-            gameBoard.checkDraw();
+            if (gameBoard.checkWin(mark)) {
+                player.addScore();
+            } else if (gameBoard.checkDraw()) {
+                alert('nmo one wins lmao');
+            }
+            
             boarDisplay.updateBoard();
         }
     });
@@ -92,7 +99,6 @@ const boarDisplay = (() => {
 })();
 
 const game = createGame();
-
 
 function createPlayer(playerName, playerMark) {
     const name = playerName;
@@ -113,8 +119,8 @@ function createGame() {
 
     let currentPlayer = playerTwo;
     const setCurrentPlayer = () => {
-       return currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        return currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
     }
 
-    return { setCurrentPlayer };
+    return { playerOne, playerTwo, setCurrentPlayer };
 }
