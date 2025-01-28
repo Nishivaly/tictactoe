@@ -11,11 +11,17 @@
 
 <body>
     <div class="container">
-            <div id="scores">
+        <div id="scores">
+            <div id="player-one" class="player">
                 <p id="player1-score">Player one score: 0</p>
-                <p id="player2-score">Player two score: 0</p>
+                <button class="change-name">Change name</button>
             </div>
-            <button id="reset-scores">Restart scores</button>
+            <div id="player-two" class="player">
+                <p id="player2-score">Player two score: 0</p>
+                <button class="change-name">Change name</button>
+            </div>
+        </div>
+        <button id="reset-scores">Restart scores</button>
 
         <div id="board">
             <div class="square" data-row="0" data-col="0"></div>

@@ -65,6 +65,7 @@ const displayController = (() => {
     const playerTwoDisplay = document.querySelector('#player2-score');
     const restartGameButton = document.querySelector('#restart-game');
     const resetScoresButton = document.querySelector('#reset-scores');
+    const scoreDisplay = document.querySelector("#scores")
 
     const updateBoardDisplay = () => {
         const flatBoardArray = gameBoard.getBoardArray().flat();
@@ -76,17 +77,19 @@ const displayController = (() => {
 
     const updateScoreDisplay = () => {
         playerOneDisplay.textContent =
-            `Player one score: ${game.getPlayerOne().getScore()}`;
+            `${game.getPlayerOne().getName()}'s
+            score: ${game.getPlayerOne().getScore()}`;
 
         playerTwoDisplay.textContent =
-            `Player two score: ${game.getPlayerTwo().getScore()}`;
+            `${game.getPlayerTwo().getName()}'s
+            score: ${game.getPlayerTwo().getScore()}`;
     }
 
     board.addEventListener('click', event => {
         if (event.target.classList.contains('square')) {
 
             if (game.getGameStatus()) {
-                
+
                 const row = parseInt(event.target.dataset.row);
                 const col = parseInt(event.target.dataset.col);
 
@@ -117,6 +120,20 @@ const displayController = (() => {
         game.getPlayerOne().restartScore();
         game.getPlayerTwo().restartScore();
         updateScoreDisplay();
+    });
+
+    scoreDisplay.addEventListener('click', event => {
+        if (event.target.classList.contains("change-name")) {
+            const newName = prompt("Enter new player name");
+            if (event.target.parentElement.id === 'player-one') {
+                game.getPlayerOne()
+                    .changeName(newName);
+            } else {
+                game.getPlayerTwo()
+                    .changeName(newName);
+            }
+            updateScoreDisplay();
+        }
     });
 
     return { updateBoardDisplay, updateScoreDisplay };
