@@ -63,20 +63,33 @@ const gameBoard = (() => {
 
 const boarDisplay = (() => {
 
-    // const board = document.querySelector('#board');
-    const squares = document.querySelectorAll('#board .square');
+    const board = document.querySelector('#board');
+    const squares = document.querySelectorAll('.square');
 
-    const updateBoard = (boardArray) => {
-        const flatBoardArray = boardArray.flat();
+    const updateBoard = () => {
+        const flatBoardArray = gameBoard.getBoardArray().flat();
         squares.forEach((square, i) => {
             square.textContent = flatBoardArray[i] ===
                 null ? 'EMPTY' : flatBoardArray[i];
         });
     }
 
+    board.addEventListener('click', event => {
+        if (event.target.classList.contains('square')) {
+            const row = parseInt(event.target.dataset.row);
+            const col = parseInt(event.target.dataset.col);
+            gameBoard.addMark('XD', row, col);
+            gameBoard.checkWin('XD');
+            gameBoard.checkDraw();
+            boarDisplay.updateBoard();
+        }
+    });
+
     return { updateBoard };
 
 })();
+
+
 
 function createPlayer(playerName, playerMark) {
     const name = playerName;
