@@ -74,10 +74,10 @@ const displayController = (() => {
 
     const updateScoreDisplay = () => {
         playerOneDisplay.textContent =
-            `Player one score: ${game.playerOne.getScore()}`;
+            `Player one score: ${game.getPlayerOne().getScore()}`;
 
         playerTwoDisplay.textContent =
-            `Player two score: ${game.playerTwo.getScore()}`;
+            `Player two score: ${game.getPlayerTwo().getScore()}`;
     }
 
     board.addEventListener('click', event => {
@@ -88,9 +88,10 @@ const displayController = (() => {
                 const col = parseInt(event.target.dataset.col);
 
                 const player = game.setCurrentPlayer(); // Switches player
+                const playerMark = player.getMark();
 
-                gameBoard.addMark(player.mark, row, col);
-                if (gameBoard.checkWin(player.mark)) {
+                gameBoard.addMark(playerMark, row, col);
+                if (gameBoard.checkWin(playerMark)) {
                     player.addScore();
                     updateScoreDisplay();
                     game.finishGame();
@@ -110,8 +111,8 @@ const displayController = (() => {
     });
 
     restartScoresButton.addEventListener('click', () => {
-        game.playerOne.restartScore();
-        game.playerTwo.restartScore();
+        game.getPlayerOne().restartScore();
+        game.getPlayerTwo().restartScore();
         displayController.updateScoreDisplay();
     });
 
@@ -122,8 +123,12 @@ const displayController = (() => {
 const game = createGame();
 
 function createPlayer(playerName, playerMark) {
-    const name = playerName;
+    let name = playerName;
     const mark = playerMark;
+
+    const changeName = newName => name = newName;
+    const getName = () => name;
+    const getMark = () => mark;
 
     let score = 0;
     const getScore = () => score;
@@ -131,8 +136,9 @@ function createPlayer(playerName, playerMark) {
     const restartScore = () => score = 0;
 
     return {
-        name, mark, getScore,
+        getMark, getName, getScore,
         addScore, restartScore,
+        changeName,
     };
 }
 
@@ -150,14 +156,18 @@ function createGame() {
         }
     }
 
+    const getPlayerOne = () => playerOne;
+    const getPlayerTwo = () => playerTwo;
+
+
     let gameActive = true;
     const startGame = () => gameActive = true;
     const finishGame = () => gameActive = false;
     const getGameStatus = () => gameActive;
 
     return {
-        playerOne, playerTwo,
         setCurrentPlayer, startGame,
         finishGame, getGameStatus,
+        getPlayerOne, getPlayerTwo,
     };
 }
