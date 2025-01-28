@@ -83,27 +83,31 @@ const displayController = (() => {
 
             const player = game.setCurrentPlayer();
 
-            gameBoard.addMark(player.mark, row, col);
-            if (gameBoard.checkWin(player.mark)) {
-                player.addScore();
-                if (player === game.playerOne) {
-                    playerOneDisplay.textContent =
-                        `Player one score: ${[player.getScore()]}`
-                } else {
-                    playerTwoDisplay.textContent =
-                        `Player two score: ${[player.getScore()]}`
+            if (game.getGameStatus()) {
+                gameBoard.addMark(player.mark, row, col);
+                if (gameBoard.checkWin(player.mark)) {
+                    player.addScore();
+                    game.finishGame();
+                    if (player === game.playerOne) {
+                        playerOneDisplay.textContent =
+                            `Player one score: ${[player.getScore()]}`
+                    } else {
+                        playerTwoDisplay.textContent =
+                            `Player two score: ${[player.getScore()]}`
+                    }
+                } else if (gameBoard.checkDraw()) {
+                    alert('nmo one wins lmao');
                 }
-            } else if (gameBoard.checkDraw()) {
-                alert('nmo one wins lmao');
-            }
 
-            displayController.updateBoard();
+                displayController.updateBoard();
+            }
         }
     });
 
     restartButton.addEventListener('click', () => {
         gameBoard.reset();
         displayController.updateBoard();
+        game.startGame();
     })
 
     return { updateBoard };
@@ -133,5 +137,14 @@ function createGame() {
             playerOne ? playerTwo : playerOne;
     }
 
-    return { playerOne, playerTwo, setCurrentPlayer };
+    let gameActive = true;
+    const startGame = () => gameActive = true;
+    const finishGame = () => gameActive = false;
+    const getGameStatus = () => gameActive;
+
+    return {
+        playerOne, playerTwo,
+        setCurrentPlayer, startGame,
+        finishGame, getGameStatus
+    };
 }
