@@ -78,8 +78,10 @@ const boarDisplay = (() => {
         if (event.target.classList.contains('square')) {
             const row = parseInt(event.target.dataset.row);
             const col = parseInt(event.target.dataset.col);
-            gameBoard.addMark('XD', row, col);
-            gameBoard.checkWin('XD');
+
+            const mark = game.setCurrentPlayer().mark;
+            gameBoard.addMark(mark, row, col);
+            gameBoard.checkWin(mark);
             gameBoard.checkDraw();
             boarDisplay.updateBoard();
         }
@@ -89,6 +91,7 @@ const boarDisplay = (() => {
 
 })();
 
+const game = createGame();
 
 
 function createPlayer(playerName, playerMark) {
@@ -102,11 +105,16 @@ function createPlayer(playerName, playerMark) {
     return { name, mark, getScore, addScore };
 }
 
-function createNewGame() {
+function createGame() {
     gameBoard.reset();
 
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
 
-    return { playerOne, playerTwo };
+    let currentPlayer = playerTwo;
+    const setCurrentPlayer = () => {
+       return currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+    }
+
+    return { setCurrentPlayer };
 }
