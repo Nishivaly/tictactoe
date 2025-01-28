@@ -56,15 +56,16 @@ const gameBoard = (() => {
 
     const getBoardArray = () => board;
 
-    const show = () => console.log(board);
-
-    return { addMark, reset, show, checkDraw, checkWin, getBoardArray };
+    return { addMark, reset, checkDraw, checkWin, getBoardArray };
 })();
 
-const boarDisplay = (() => {
+const displayController = (() => {
 
     const board = document.querySelector('#board');
     const squares = document.querySelectorAll('.square');
+    const playerOneDisplay = document.querySelector('#player1-score');
+    const playerTwoDisplay = document.querySelector('#player2-score');
+    const restartButton = document.querySelector('#restart-game');
 
     const updateBoard = () => {
         const flatBoardArray = gameBoard.getBoardArray().flat();
@@ -81,18 +82,29 @@ const boarDisplay = (() => {
             const col = parseInt(event.target.dataset.col);
 
             const player = game.setCurrentPlayer();
-            const mark = player.mark;
 
-            gameBoard.addMark(mark, row, col);
-            if (gameBoard.checkWin(mark)) {
+            gameBoard.addMark(player.mark, row, col);
+            if (gameBoard.checkWin(player.mark)) {
                 player.addScore();
+                if (player === game.playerOne) {
+                    playerOneDisplay.textContent =
+                        `Player one score: ${[player.getScore()]}`
+                } else {
+                    playerTwoDisplay.textContent =
+                        `Player two score: ${[player.getScore()]}`
+                }
             } else if (gameBoard.checkDraw()) {
                 alert('nmo one wins lmao');
             }
-            
-            boarDisplay.updateBoard();
+
+            displayController.updateBoard();
         }
     });
+
+    restartButton.addEventListener('click', () => {
+        gameBoard.reset();
+        displayController.updateBoard();
+    })
 
     return { updateBoard };
 
@@ -112,14 +124,13 @@ function createPlayer(playerName, playerMark) {
 }
 
 function createGame() {
-    gameBoard.reset();
-
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
 
     let currentPlayer = playerTwo;
     const setCurrentPlayer = () => {
-        return currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        return currentPlayer = currentPlayer ===
+            playerOne ? playerTwo : playerOne;
     }
 
     return { playerOne, playerTwo, setCurrentPlayer };
