@@ -8,10 +8,7 @@ const gameBoard = (() => {
     const addMark = (mark, row, column) => {
         if (board[row][column] === null) {
             board[row][column] = mark;
-        } else {
-            console.log('Space already taken!');
         }
-        console.log(board);
     };
 
     const checkWin = (mark) => {
@@ -20,7 +17,6 @@ const gameBoard = (() => {
                 (board[i][0] === mark && board[i][1] === mark && board[i][2] === mark) || // Row
                 (board[0][i] === mark && board[1][i] === mark && board[2][i] === mark)    // Column
             ) {
-                console.log(`${mark} wins!`)
                 return true;
             }
         }
@@ -28,7 +24,6 @@ const gameBoard = (() => {
             (board[0][0] === mark && board[1][1] === mark && board[2][2] === mark) || // Diagonal 1
             (board[0][2] === mark && board[1][1] === mark && board[2][0] === mark)    // Diagonal 2
         ) {
-            console.log(`${mark} wins!`)
             return true;
         }
         return false;
@@ -92,7 +87,7 @@ const displayController = (() => {
                 const row = parseInt(event.target.dataset.row);
                 const col = parseInt(event.target.dataset.col);
 
-                const player = game.setCurrentPlayer();
+                const player = game.setCurrentPlayer(); // Switches player
 
                 gameBoard.addMark(player.mark, row, col);
                 if (gameBoard.checkWin(player.mark)) {
@@ -118,7 +113,6 @@ const displayController = (() => {
         game.playerOne.restartScore();
         game.playerTwo.restartScore();
         displayController.updateScoreDisplay();
-
     });
 
     return { updateBoardDisplay, updateScoreDisplay };
@@ -146,7 +140,7 @@ function createGame() {
     const playerOne = createPlayer('Jimmy', 'O');
     const playerTwo = createPlayer('Tommy', 'X');
 
-    let currentPlayer = playerTwo;
+    let currentPlayer = playerTwo; // Hack to make p1 go first
     const setCurrentPlayer = (player) => {
         if (player) {
             return currentPlayer = player;
