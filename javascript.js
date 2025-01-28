@@ -66,7 +66,6 @@ const displayController = (() => {
     const restartGameButton = document.querySelector('#restart-game');
     const resetScoresButton = document.querySelector('#reset-scores');
 
-
     const updateBoardDisplay = () => {
         const flatBoardArray = gameBoard.getBoardArray().flat();
         squares.forEach((square, i) => {
@@ -102,14 +101,14 @@ const displayController = (() => {
                 } else if (gameBoard.checkDraw()) {
                     game.finishGame();
                 }
-                displayController.updateBoardDisplay();
+                updateBoardDisplay();
             }
         }
     });
 
     restartGameButton.addEventListener('click', () => {
         gameBoard.reset();
-        displayController.updateBoardDisplay();
+        updateBoardDisplay();
         game.startGame();
         game.setCurrentPlayer(game.getPlayerTwo()); // Makes p1 start 
     });
@@ -117,7 +116,7 @@ const displayController = (() => {
     resetScoresButton.addEventListener('click', () => {
         game.getPlayerOne().restartScore();
         game.getPlayerTwo().restartScore();
-        displayController.updateScoreDisplay();
+        updateScoreDisplay();
     });
 
     return { updateBoardDisplay, updateScoreDisplay };
