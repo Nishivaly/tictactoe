@@ -88,12 +88,12 @@ const displayController = (() => {
     board.addEventListener('click', event => {
         if (event.target.classList.contains('square')) {
 
-            const row = parseInt(event.target.dataset.row);
-            const col = parseInt(event.target.dataset.col);
-
-            const player = game.setCurrentPlayer();
-
             if (game.getGameStatus()) {
+                const row = parseInt(event.target.dataset.row);
+                const col = parseInt(event.target.dataset.col);
+
+                const player = game.setCurrentPlayer();
+
                 gameBoard.addMark(player.mark, row, col);
                 if (gameBoard.checkWin(player.mark)) {
                     player.addScore();
@@ -111,7 +111,7 @@ const displayController = (() => {
         gameBoard.reset();
         displayController.updateBoardDisplay();
         game.startGame();
-
+        game.setCurrentPlayer(game.playerTwo); // Makes p1 start 
     });
 
     restartScoresButton.addEventListener('click', () => {
@@ -147,9 +147,13 @@ function createGame() {
     const playerTwo = createPlayer('Tommy', 'X');
 
     let currentPlayer = playerTwo;
-    const setCurrentPlayer = () => {
-        return currentPlayer = currentPlayer ===
-            playerOne ? playerTwo : playerOne;
+    const setCurrentPlayer = (player) => {
+        if (player) {
+            return currentPlayer = player;
+        } else {
+            return currentPlayer = currentPlayer ===
+                playerOne ? playerTwo : playerOne;
+        }
     }
 
     let gameActive = true;
