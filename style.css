@@ -24,10 +24,13 @@ body {
     height: max-content;
     grid-template-columns: repeat(3, 200px);
     grid-template-rows: repeat(3, 200px);
-
 }
 
 .square {
     background-color: gray;
     border: 2px black solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7.0rem;
 }

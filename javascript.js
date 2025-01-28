@@ -70,7 +70,7 @@ const boarDisplay = (() => {
         const flatBoardArray = gameBoard.getBoardArray().flat();
         squares.forEach((square, i) => {
             square.textContent = flatBoardArray[i] ===
-                null ? 'EMPTY' : flatBoardArray[i];
+                null ? '' : flatBoardArray[i];
         });
     }
 
