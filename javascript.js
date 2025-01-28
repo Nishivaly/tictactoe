@@ -65,7 +65,9 @@ const displayController = (() => {
     const squares = document.querySelectorAll('.square');
     const playerOneDisplay = document.querySelector('#player1-score');
     const playerTwoDisplay = document.querySelector('#player2-score');
-    const restartButton = document.querySelector('#restart-game');
+    const restartGameButton = document.querySelector('#restart-game');
+    const restartScoresButton = document.querySelector('#restart-scores');
+
 
     const updateBoard = () => {
         const flatBoardArray = gameBoard.getBoardArray().flat();
@@ -73,6 +75,15 @@ const displayController = (() => {
             square.textContent = flatBoardArray[i] ===
                 null ? '' : flatBoardArray[i];
         });
+    }
+
+    const updateScoreDisplay = () => {
+        playerOneDisplay.textContent =
+            `Player one score: ${game.playerOne.getScore()}`;
+
+        playerTwoDisplay.textContent =
+            `Player two score: ${game.playerTwo.getScore()}`;
+
     }
 
     board.addEventListener('click', event => {
@@ -87,16 +98,10 @@ const displayController = (() => {
                 gameBoard.addMark(player.mark, row, col);
                 if (gameBoard.checkWin(player.mark)) {
                     player.addScore();
+                    updateScoreDisplay();                    
                     game.finishGame();
-                    if (player === game.playerOne) {
-                        playerOneDisplay.textContent =
-                            `Player one score: ${[player.getScore()]}`
-                    } else {
-                        playerTwoDisplay.textContent =
-                            `Player two score: ${[player.getScore()]}`
-                    }
                 } else if (gameBoard.checkDraw()) {
-                    alert('nmo one wins lmao');
+                    game.finishGame();
                 }
 
                 displayController.updateBoard();
@@ -104,13 +109,21 @@ const displayController = (() => {
         }
     });
 
-    restartButton.addEventListener('click', () => {
+    restartGameButton.addEventListener('click', () => {
         gameBoard.reset();
         displayController.updateBoard();
         game.startGame();
-    })
 
-    return { updateBoard };
+    });
+
+    restartScoresButton.addEventListener('click', () => {
+        game.playerOne.restartScore();
+        game.playerTwo.restartScore();
+        displayController.updateScoreDisplay();
+
+    });
+
+    return { updateBoard, updateScoreDisplay };
 
 })();
 
@@ -123,8 +136,9 @@ function createPlayer(playerName, playerMark) {
     let score = 0;
     const getScore = () => score;
     const addScore = () => score++
+    const restartScore = () => score = 0;
 
-    return { name, mark, getScore, addScore };
+    return { name, mark, getScore, addScore, restartScore };
 }
 
 function createGame() {

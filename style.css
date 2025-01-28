@@ -6,17 +6,15 @@ body {
     padding: 10px;
 }
 
+.hidden {
+    display: none;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2.0rem;
-}
-
-#menu {
-    display: flex;
-    flex-direction: column;
-    gap: 1.0rem;
 }
 
 #board {
